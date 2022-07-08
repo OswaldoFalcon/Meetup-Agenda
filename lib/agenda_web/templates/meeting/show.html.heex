@@ -1,0 +1,38 @@
+<h1>Show Meeting</h1>
+
+<ul>
+
+  <li>
+    <strong>Week:</strong>
+    <%= @meeting.week %>
+  </li>
+
+  <li>
+    <strong>Day:</strong>
+    <%= @meeting.day %>
+  </li>
+
+  <li>
+    <strong>Month:</strong>
+    <%= @meeting.month %>
+  </li>
+
+  <li>
+    <strong>Year:</strong>
+    <%= @meeting.year %>
+  </li>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @meeting.title %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @meeting.description %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.meeting_path(@conn, :edit, @meeting) %></span> |
+<span><%= link "Back", to: Routes.meeting_path(@conn, :index) %></span>

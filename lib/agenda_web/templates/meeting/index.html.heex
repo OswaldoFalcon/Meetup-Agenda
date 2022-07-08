@@ -1,0 +1,36 @@
+<h1>Listing Meetings</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Week</th>
+      <th>Day</th>
+      <th>Month</th>
+      <th>Year</th>
+      <th>Title</th>
+      <th>Description</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for meeting <- @meetings do %>
+    <tr>
+      <td><%= meeting.week %></td>
+      <td><%= meeting.day %></td>
+      <td><%= meeting.month %></td>
+      <td><%= meeting.year %></td>
+      <td><%= meeting.title %></td>
+      <td><%= meeting.description %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.meeting_path(@conn, :show, meeting) %></span>
+        <span><%= link "Edit", to: Routes.meeting_path(@conn, :edit, meeting) %></span>
+        <span><%= link "Delete", to: Routes.meeting_path(@conn, :delete, meeting), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Meeting", to: Routes.meeting_path(@conn, :new) %></span>

@@ -1,0 +1,35 @@
+<.form let={f} for={@changeset} action={@action}>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <%= label f, :week %>
+    <%= select f, :week, ["first", "second", "third", "fourth", "fifth"]%>
+  <%= error_tag f, :week %>
+
+  <%= label f, :day %>
+  <%= select f, :day, ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]%>
+  <%= error_tag f, :day %>
+
+  <%= label f, :month %>
+  <%= select f, :month, ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]%>
+  <%= error_tag f, :month %>
+
+  <%= label f, :year %>
+  <%= select f, :year, ["2022","2023","2024","2025","2026"]%>
+  <%= error_tag f, :year %>
+
+  <%= label f, :title %>
+  <%= text_input f, :title %>
+  <%= error_tag f, :title %>
+
+  <%= label f, :description %>
+  <%= text_input f, :description %>
+  <%= error_tag f, :description %>
+
+  <div>
+    <%= submit "Save" %>
+  </div>
+</.form>
