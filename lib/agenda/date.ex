@@ -1,4 +1,4 @@
-defmodule Agenda.Date do
+defmodule Agenda.Dates do
   @moduledoc """
   The Date Module transforms the input
   to a Date type 
@@ -9,8 +9,8 @@ defmodule Agenda.Date do
   def merge_date(year, month, weekday, :fourth), do: find_date(year, month, weekday, 22..28)
   def merge_date(year, month, weekday, :fifth), do: find_date(year, month, weekday, 28..35)
 
-  defp find_date(year, month, weekday, week_range) do  
-    year = Atom.to_string(year) |> String.to_integer
+  defp find_date(year, month, weekday, week_range) do
+    year = Atom.to_string(year) |> String.to_integer()
     month = get_month_number(month)
     weekday_num = get_weekday_num(weekday)
 
@@ -28,7 +28,8 @@ defmodule Agenda.Date do
   defp get_weekday_num(weekday) do
     Timex.day_to_num(weekday)
   end
+
   defp get_month_number(month) do
-    Atom.to_string(month) |> Timex.month_to_num
+    Atom.to_string(month) |> Timex.month_to_num()
   end
 end

@@ -7,7 +7,7 @@ defmodule Agenda.MixProject do
       version: "0.1.0",
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:gettext] ++ Mix.compilers(),
+      compilers: [:gettext] ++ Mix.compilers() ++ [:surface],
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -26,6 +26,7 @@ defmodule Agenda.MixProject do
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(:dev), do: ["lib"] ++ catalogues()
   defp elixirc_paths(_), do: ["lib"]
 
   # Specifies your project dependencies.
@@ -49,7 +50,9 @@ defmodule Agenda.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:timex, "~> 3.7"}
+      {:timex, "~> 3.7"},
+      {:surface, "~> 0.7.4"},
+      {:surface_catalogue, "~> 0.4.0"}
     ]
   end
 
@@ -66,6 +69,12 @@ defmodule Agenda.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.deploy": ["esbuild default --minify", "phx.digest"]
+    ]
+  end
+
+  def catalogues do
+    [
+      "priv/catalogue"
     ]
   end
 end

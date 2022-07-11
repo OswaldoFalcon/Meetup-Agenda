@@ -21,7 +21,14 @@ defmodule Agenda.ScheduleTest do
     end
 
     test "create_meeting/1 with valid data creates a meeting" do
-      valid_attrs = %{day: "some day", description: "some description", month: "some month", title: "some title", week: "some week", year: 42}
+      valid_attrs = %{
+        day: "some day",
+        description: "some description",
+        month: "some month",
+        title: "some title",
+        week: "some week",
+        year: 42
+      }
 
       assert {:ok, %Meeting{} = meeting} = Schedule.create_meeting(valid_attrs)
       assert meeting.day == "some day"
@@ -38,7 +45,15 @@ defmodule Agenda.ScheduleTest do
 
     test "update_meeting/2 with valid data updates the meeting" do
       meeting = meeting_fixture()
-      update_attrs = %{day: "some updated day", description: "some updated description", month: "some updated month", title: "some updated title", week: "some updated week", year: 43}
+
+      update_attrs = %{
+        day: "some updated day",
+        description: "some updated description",
+        month: "some updated month",
+        title: "some updated title",
+        week: "some updated week",
+        year: 43
+      }
 
       assert {:ok, %Meeting{} = meeting} = Schedule.update_meeting(meeting, update_attrs)
       assert meeting.day == "some updated day"

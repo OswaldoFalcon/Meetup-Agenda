@@ -3,8 +3,22 @@ defmodule AgendaWeb.MeetingControllerTest do
 
   import Agenda.ScheduleFixtures
 
-  @create_attrs %{day: "some day", description: "some description", month: "some month", title: "some title", week: "some week", year: 42}
-  @update_attrs %{day: "some updated day", description: "some updated description", month: "some updated month", title: "some updated title", week: "some updated week", year: 43}
+  @create_attrs %{
+    day: "some day",
+    description: "some description",
+    month: "some month",
+    title: "some title",
+    week: "some week",
+    year: 42
+  }
+  @update_attrs %{
+    day: "some updated day",
+    description: "some updated description",
+    month: "some updated month",
+    title: "some updated title",
+    week: "some updated week",
+    year: 43
+  }
   @invalid_attrs %{day: nil, description: nil, month: nil, title: nil, week: nil, year: nil}
 
   describe "index" do

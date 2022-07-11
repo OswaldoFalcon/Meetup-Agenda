@@ -3,9 +3,27 @@ defmodule Agenda.Schedule.Meeting do
   import Ecto.Changeset
 
   schema "meetings" do
-    field :day, Ecto.Enum, values: [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday]
+    field :day, Ecto.Enum,
+      values: [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday]
+
     field :description, :string
-    field :month, Ecto.Enum, values: [:january, :february, :march, :april, :may, :june, :july, :august, :september, :october, :november, :december]
+
+    field :month, Ecto.Enum,
+      values: [
+        :january,
+        :february,
+        :march,
+        :april,
+        :may,
+        :june,
+        :july,
+        :august,
+        :september,
+        :october,
+        :november,
+        :december
+      ]
+
     field :title, :string
     field :week, Ecto.Enum, values: [:first, :second, :third, :fourth, :fifth]
     field :year, Ecto.Enum, values: [:"2022", :"2023", :"2024", :"2025", :"2026"]

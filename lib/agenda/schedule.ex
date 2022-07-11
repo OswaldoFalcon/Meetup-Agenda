@@ -5,7 +5,7 @@ defmodule Agenda.Schedule do
 
   import Ecto.Query, warn: false
   alias Agenda.Repo
-  alias Agenda.Date
+  alias Agenda.Dates
   alias Agenda.Schedule.Meeting
 
   @doc """
@@ -102,10 +102,47 @@ defmodule Agenda.Schedule do
     Meeting.changeset(meeting, attrs)
   end
 
-  def get_dates do
+  # rows for calendar
+  def week_rows(today) do
+    from_date =
+      today
+      |> Timex.beginning_of_month()
+      |> Timex.beginning_of_week(:sun)
+
+    to_date =
+      today
+      |> Timex.end_of_month()
+      |> Timex.end_of_week(:sun)
+
+    
+      Date.range(from_date, to_date, 1)
+      |> Enum.take(42)
+      |> Enum.chunk_every(7)
+  end
+
+  # days for Agenda view
+  def days_in_month(date) do
+    Date.range(Timex.beginning_of_month(date), Timex.end_of_month(date), 1)
+    |> Enum.take(31)
+  end
+
+  def get_dates() do
     meets = Repo.all(Meeting)
-    Enum.map(meets, fn meet ->  Map.put(%{},  String.to_atom(meet.title) ,
-    Date.merge_date(meet.year, meet.month, meet.day, meet.week) ) end)  
+
+    Enum.map(meets, fn meet ->
+      Map.put(
+        %{},
+        :date,
+        Dates.merge_date(meet.year, meet.month, meet.day, meet.week)
+      )
+      |> Map.put(:title, meet.title)
+      |> Map.put(:description, meet.description)
+    end)
+  end
+
+  def day_meetings(date) do
+    meetings = get_dates()
+    Enum.filter(meetings, fn meet -> meet.date == date end)
   end
 
 end
