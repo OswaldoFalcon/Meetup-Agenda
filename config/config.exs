@@ -29,6 +29,14 @@ config :agenda, Agenda.Mailer, adapter: Swoosh.Adapters.Local
 # Swoosh API client is needed for adapters other than SMTP.
 config :swoosh, :api_client, false
 
+
+config :dart_sass,
+  version: "1.53.0",
+  default: [
+    args: ~w(--load-path=../deps/bulma css:../priv/static/assets),
+    cd: Path.expand("../assets", __DIR__)
+  ]
+
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.14.0",
@@ -57,6 +65,8 @@ config :surface, :components, [
   {Surface.Components.Form.ErrorTag,
    default_translator: {AgendaWeb.ErrorHelpers, :translate_error}}
 ]
+
+
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

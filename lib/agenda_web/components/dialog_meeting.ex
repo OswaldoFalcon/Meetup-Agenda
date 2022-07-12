@@ -1,14 +1,16 @@
 defmodule AgendaWeb.Components.DialogMeeting do
-   @moduledoc """
+  @moduledoc """
   A sample component to generate the form.
   """
   use Surface.LiveComponent
-
+  alias Agenda.Schedule.Meeting
+  alias  Agenda.Schedule
   prop title, :string, required: true
   prop ok_label, :string, default: "Ok"
   prop close_label, :string, default: "Close"
   prop ok_click, :event, default: "close"
   prop close_click, :event, default: "close"
+  prop id_db, :integer
 
   data show, :boolean, default: false
 
@@ -26,8 +28,16 @@ defmodule AgendaWeb.Components.DialogMeeting do
           <#slot />
         </section>
         <footer class="modal-card-foot" style="justify-content: flex-end">
-          <button :on-click={@ok_click}> {@ok_label} </button>
-          <button :on-click={@close_click} kind="is-danger">> {@close_label} </button>
+          <button class="button is-danger is-outlined" :on-click="delete" :values={id: @id_db}>
+            <span>Delete</span>
+            <span class="icon is-small">
+              <i class="fas fa-times" />
+            </span>
+          </button>
+          <button :on-click={@close_click} class="button is-danger">
+            {@close_label}
+          </button>
+          
         </footer>
       </div>
     </div>
@@ -49,4 +59,15 @@ defmodule AgendaWeb.Components.DialogMeeting do
   def handle_event("close", _, socket) do
     {:noreply, assign(socket, show: false)}
   end
+
+   def handle_event("delete", values, socket) do
+    id = String.to_integer(values["id"]) 
+    meeting = Schedule.get_meeting!(id)
+    relative_today = Timex.today |> Timex.shift(days: 1)
+    Schedule.delete_meeting(meeting)
+    
+    send(self(), {:today, relative_today})
+    {:noreply, push_redirect(socket, to: "/calendar")}
+   end
+
 end

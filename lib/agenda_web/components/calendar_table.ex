@@ -11,6 +11,7 @@ defmodule AgendaWeb.Components.CalendarTable do
   prop year, :date
   prop name_days, :list
 
+
   def render(assigns) do
     ~F"""
    
@@ -21,7 +22,7 @@ defmodule AgendaWeb.Components.CalendarTable do
             <th>
               {name}
             </th>
-          {#else}
+          {#else} 
             No items
           {/for}
         </tr>

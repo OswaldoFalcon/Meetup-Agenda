@@ -51,7 +51,7 @@ defmodule Agenda.Schedule do
   """
   def create_meeting(attrs \\ %{}) do
     %Meeting{}
-    |> Meeting.changeset_strict(attrs)
+    |> Meeting.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -137,6 +137,7 @@ defmodule Agenda.Schedule do
       )
       |> Map.put(:title, meet.title)
       |> Map.put(:description, meet.description)
+      |> Map.put(:id, meet.id)
     end)
   end
 

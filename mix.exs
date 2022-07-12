@@ -52,7 +52,9 @@ defmodule Agenda.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:timex, "~> 3.7"},
       {:surface, "~> 0.7.4"},
-      {:surface_catalogue, "~> 0.4.0"}
+      {:surface_catalogue, "~> 0.4.0"},
+      {:dart_sass, "~> 0.1", runtime: Mix.env() == :dev},
+      {:bulma, "0.9.3"}
     ]
   end
 
@@ -68,7 +70,11 @@ defmodule Agenda.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      "assets.deploy": [
+        "esbuild default --minify",
+        "sass default --no-source-map --style=compressed",
+        "phx.digest"
+      ]
     ]
   end
 
