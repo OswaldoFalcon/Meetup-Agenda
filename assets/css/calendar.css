@@ -1,0 +1,33 @@
+.navigation{
+  display:  flex;
+  justify-content: space-around;
+}
+p {
+  font-size: 30px;
+}
+
+th {
+  width: 14.28%;
+  border: solid rgb(177, 176, 176);
+  border-width: 0px 0px 3px 0px;
+  
+}
+
+td {
+  border: solid rgb(215, 215, 215);
+  border-width: 0px 1px 1px 1px;
+}
+.other-month-day {
+  background-color: rgb(245, 243, 243);
+  
+}
+.month-day {
+  background-color: rgb(255, 255, 255);
+}
+
+.agenda{
+
+  border: solid rgb(177, 176, 176);
+  border-width: 1px 0px 1px 0px;
+}
+

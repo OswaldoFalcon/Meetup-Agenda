@@ -1,7 +1,7 @@
 defmodule AgendaWeb.Calendar do
   use Surface.LiveView
   use Timex
-  alias AgendaWeb.Components.{CalendarTable, AgendaView}
+  alias AgendaWeb.Components.{CalendarTable, AgendaView, DialogMeeting}
   @today_date Timex.today()
   data today, :date, default: Timex.today()
   data month, :string, default: @today_date.month |> Timex.month_name()
@@ -10,10 +10,10 @@ defmodule AgendaWeb.Calendar do
 
   def render(assigns) do
     ~F"""
-  
+    <div class="content"> 
     <div class="navigation">
       <div>
-        {@month} {@year}
+        <p>{@month} {@year}</p>
       </div>
       <button :on-click="change_month" phx-value-direction="previous">
         ←
@@ -27,6 +27,14 @@ defmodule AgendaWeb.Calendar do
     </div>
     <CalendarTable today={@today} month={@month} year={@year} name_days={@name_days} />
     <AgendaView today={@today} month={@month} year={@year} name_days={@name_days} />
+    </div>
+    <div>
+    <DialogMeeting  title="Meeting Dialog" id="as">
+    Clicking <strong>"Ok"</strong> or <strong>"Close"</strong>
+    closes the form (default behaviour).
+    <button :on-click="open_dialog" > a</button>
+  </DialogMeeting>
+    </div>
     """
   end
 
@@ -54,5 +62,11 @@ defmodule AgendaWeb.Calendar do
            year: new_today.year
          )}
     end
+  end
+
+  def handle_event("open_dialog",_, socket) do
+    IO.puts("as")
+    DialogMeeting.open("as")
+    {:noreply, socket}
   end
 end

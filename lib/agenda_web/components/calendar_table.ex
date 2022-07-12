@@ -2,6 +2,7 @@ defmodule AgendaWeb.Components.CalendarTable do
   @moduledoc """
   A sample component to generate the form.
   """
+  alias AgendaWeb.Components.{DayCellTable}
   use Surface.Component
   alias Agenda.Schedule
 
@@ -12,27 +13,23 @@ defmodule AgendaWeb.Components.CalendarTable do
 
   def render(assigns) do
     ~F"""
+   
     <table>
-      <tr>
-        {#for name <- @name_days}
-          <th>
-            {name}
-          </th>
-        {#else}
-          No items
-        {/for}
-      </tr>
-
+      <thead>
+        <tr>
+          {#for name <- @name_days}
+            <th>
+              {name}
+            </th>
+          {#else}
+            No items
+          {/for}
+        </tr>
+      </thead>
       {#for week <- Schedule.week_rows(@today)}
         <tr>
-          {#for day <- week}
-            <td>
-              {day.day} <br>
-              {#for meetings <- Schedule.day_meetings(day)}
-                🔵{meetings.title}
-              {#else}
-              {/for}
-            </td>
+          {#for date <- week}
+           <DayCellTable month={@month} date={date} id={date} />
           {#else}
             No items
           {/for}
@@ -41,6 +38,7 @@ defmodule AgendaWeb.Components.CalendarTable do
         No items
       {/for}
     </table>
+  
     """
   end
 end

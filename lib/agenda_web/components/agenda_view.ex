@@ -13,15 +13,18 @@ defmodule AgendaWeb.Components.AgendaView do
 
   def render(assigns) do
     ~F"""
+    <p> Agenda view </p>
     <table>
       {#for day <- Schedule.days_in_month(@today)}
         {#for meetings <- Schedule.day_meetings(day)}
           <tr>
-            <td>{Timex.month_shortname(meetings.date.month)}, {meetings.date.day}
+            <td class="agenda">
+              <p> {meetings.date.day} </p>
+              {Timex.month_shortname(meetings.date.month)}, {Timex.weekday(day)|> Timex.day_shortname}
             </td>
-            <td>{meetings.title}
+            <td class="agenda">{meetings.title}
             </td>
-            <td>{meetings.description}
+            <td class="agenda">{meetings.description}
             </td>
           </tr>
         {#else}

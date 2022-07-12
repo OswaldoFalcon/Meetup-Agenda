@@ -1,5 +1,6 @@
 /* This file is for your main application CSS */
 @import "./phoenix.css";
+@import "./calendar.css";
 
 /* Alerts and form errors used by phx.new */
 .alert {
@@ -7,6 +8,9 @@
   margin-bottom: 20px;
   border: 1px solid transparent;
   border-radius: 4px;
+}
+.phx-connected{
+  width: 100%;
 }
 .alert-info {
   color: #31708f;
