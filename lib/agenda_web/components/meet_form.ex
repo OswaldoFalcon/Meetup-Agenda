@@ -4,15 +4,38 @@ defmodule AgendaWeb.Components.MeetForm do
   """
   use Surface.LiveComponent
   alias Surface.Components.Form
-  alias Surface.Components.Form.{Field, TextInput, Label, Select, TextArea}
+  alias Surface.Components.Form.{Field, TextInput, Label, Select, TextArea, Checkbox}
   alias Agenda.Schedule
   alias Agenda.Schedule.Meeting
 
   # use Surface.Components
-  # data changeset, :any, default:  Schedule.change_meeting(%Meeting{})
+  data changeset, :changeset, default: Schedule.change_meeting(%Meeting{})
+  data data, :any, default: ""
+  data error, :boolean, default: false
+  data insert_state, :boolean, default: false
+  data strict_mode, :boolean, default: false
+
+  def mount(_params, _session, socket) do
+    {changeset, data} = Meeting.validate(%{"title" => "John Doe"})
+    {:ok, assign(socket, %{changeset: changeset, data: data})}
+  end
+
   def render(assigns) do
     ~F"""
-    <Form for={Schedule.change_meeting(%Meeting{})} action="/meetings">
+    <div :if={@insert_state} class="notification is-success">
+      <p>
+        Succes you just add it !!</p>
+    </div>
+    <div :if={@error} class="notification is-danger">
+      <p>
+        Error! Verify your inputs
+      </p>
+    </div>
+    <div>
+      Schedule mode : 
+      <Checkbox click="db_config" value="false" values={state: "true"} /> Strict Mode <br>
+    </div>
+    <Form for={@changeset} change="validate" submit="save">
       <Field name={:title}>
         <Label class="label" />
         <div class="control">
@@ -70,9 +93,66 @@ defmodule AgendaWeb.Components.MeetForm do
         </div>
       </Field>
       <div>
-        <button class="button is-link" type="submit">Submit</button>
+        <button class="button is-link" type="submit">sda</button>
+      </div>
+      <div class="column">
+        <pre style="height: 170px; border-radius: 6px; padding: 2.25rem">
+      {@data}
+      </pre>
       </div>
     </Form>
     """
+  end
+
+  def handle_event("validate", %{"meeting" => params}, socket) do
+    {changeset, data} = Meeting.validate(params)
+    {:noreply, assign(socket, changeset: changeset, data: data)}
+  end
+
+  def handle_event("db_config", values, socket) do
+    strict_mode = change_state(socket.assigns.strict_mode)
+    strict_mode |> IO.puts()
+    {:noreply, assign(socket, strict_mode: strict_mode)}
+  end
+
+  def handle_event("save", %{"meeting" => meeting_params}, socket) do
+    case socket.assigns.strict_mode do
+      false -> insert_meeting(meeting_params, socket)
+      true -> insert_meeting_strict(meeting_params, socket) 
+    end
+  end
+
+  defp insert_meeting(meeting_params, socket) do
+    case Schedule.create_meeting(meeting_params) do
+      {:ok, _} ->
+        insert_state = true
+        error = false
+        {:noreply, assign(socket, insert_state: insert_state, error: error)}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        insert_state = false
+        error = true
+        {:noreply, assign(socket, error: error, insert_state: insert_state)}
+    end
+  end
+  defp insert_meeting_strict(meeting_params, socket) do
+    case Schedule.create_meeting_strict(meeting_params) do
+      {:ok, _} ->
+        insert_state = true
+        error = false
+        {:noreply, assign(socket, insert_state: insert_state, error: error)}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        insert_state = false
+        error = true
+        {:noreply, assign(socket, error: error, insert_state: insert_state)}
+    end
+  end
+  
+  defp change_state(state) do
+    cond do
+      state == true -> false
+      state == false -> true
+    end
   end
 end

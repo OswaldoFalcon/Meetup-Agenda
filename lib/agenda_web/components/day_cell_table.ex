@@ -12,7 +12,7 @@ defmodule AgendaWeb.Components.DayCellTable do
 
   def render(assigns) do
     ~F"""
-    <div>
+   
       {#if @date.month == Timex.month_to_num(@month)}
         <td class="month-day">
           {@date.day} <br>
@@ -46,7 +46,7 @@ defmodule AgendaWeb.Components.DayCellTable do
           {/for}
         </td>
       {/if}
-    </div>
+
     """
   end
 
@@ -57,4 +57,3 @@ defmodule AgendaWeb.Components.DayCellTable do
   end
 end
 
-3

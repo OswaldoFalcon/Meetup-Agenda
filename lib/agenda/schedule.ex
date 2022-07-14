@@ -51,10 +51,20 @@ defmodule Agenda.Schedule do
   """
   def create_meeting(attrs \\ %{}) do
     %Meeting{}
+    |> Meeting.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def create_meeting_strict(attrs \\ %{}) do
+    %Meeting{}
     |> Meeting.changeset(attrs, :strict)
     |> Repo.insert()
   end
 
+
+  def insert_meeting(change) do
+    Repo.insert(change)
+  end
   @doc """
   Updates a meeting.
 

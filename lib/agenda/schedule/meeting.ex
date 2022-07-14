@@ -35,13 +35,37 @@ defmodule Agenda.Schedule.Meeting do
   def changeset(meeting, attrs) do
     meeting
     |> cast(attrs, [:week, :day, :month, :year, :title, :description])
-    |> validate_required([:week, :day, :month, :year, :title, :description])
+    |> validate_required([:title])
+    #|> validate_required([:week, :day, :month, :year, :title, :description])
   end
 
   def changeset(meeting, attrs, :strict) do
     meeting
     |> cast(attrs, [:week, :day, :month, :year, :title, :description])
-    |> validate_required([:week, :day, :month, :year, :title, :description])
+    |> validate_required([:week, :day, :month, :year, :description])
     |> unique_constraint(:title)
+  end
+
+  def validate(params) do
+    changeset =
+      %Agenda.Schedule.Meeting{}
+      |> changeset(params)
+      |> Map.put(:action, :validate)
+
+    data =
+      changeset
+      |> Ecto.Changeset.apply_changes()
+      |> format()
+
+    {changeset, data}
+  end
+  
+
+  defp format(meeting) do
+    meeting
+    |> Map.from_struct()
+    |> Map.delete(:__meta__)
+    |> Map.delete(:id)
+    |> Jason.encode!(pretty: true)
   end
 end

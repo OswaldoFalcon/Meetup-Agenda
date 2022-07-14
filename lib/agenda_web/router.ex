@@ -2,6 +2,7 @@ defmodule AgendaWeb.Router do
   use AgendaWeb, :router
 
   import Surface.Catalogue.Router
+  import Phoenix.LiveView.Router
 
   pipeline :browser do
     plug :accepts, ["html"]

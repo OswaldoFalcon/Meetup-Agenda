@@ -22,7 +22,10 @@ defmodule AgendaWeb.MeetingController do
         |> redirect(to: "/calendar")
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        conn
+        |> put_flash(:info, "Meeting created successfully.")
+        |> redirect(to: "/calendar")
+        
     end
   end
 
