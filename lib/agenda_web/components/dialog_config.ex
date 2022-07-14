@@ -4,7 +4,7 @@ defmodule AgendaWeb.Components.DialogConfig do
   """
   use Surface.LiveComponent
   alias Surface.Components.Form.Checkbox
-  alias Agenda.Schedule.Meeting
+
   prop title, :string, required: true
   prop ok_label, :string, default: "Ok"
   prop close_label, :string, default: "Close"

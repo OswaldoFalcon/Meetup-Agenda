@@ -8,12 +8,11 @@ defmodule AgendaWeb.Components.MeetForm do
   alias Agenda.Schedule
   alias Agenda.Schedule.Meeting
 
-
   # use Surface.Components
   # data changeset, :any, default:  Schedule.change_meeting(%Meeting{})
   def render(assigns) do
     ~F"""
-    <Form for={Schedule.change_meeting(%Meeting{})} action="/meetings" autocomplete="off" method="post" >
+    <Form for={Schedule.change_meeting(%Meeting{})} action="/meetings">
       <Field name={:title}>
         <Label class="label" />
         <div class="control">
@@ -46,11 +45,24 @@ defmodule AgendaWeb.Components.MeetForm do
         </div>
       </Field>
       <Field name={:month}>
-      <Label class="label" />
-      <div class="select">
-        <Select options={january: "january", february: "february", march: "march", april: "april", may: "may", june: "june", july: "july", august: "august", september: "september", october: "october", november: "november", december: "december"} />
-      </div>
-    </Field>
+        <Label class="label" />
+        <div class="select">
+          <Select options={
+            january: "january",
+            february: "february",
+            march: "march",
+            april: "april",
+            may: "may",
+            june: "june",
+            july: "july",
+            august: "august",
+            september: "september",
+            october: "october",
+            november: "november",
+            december: "december"
+          } />
+        </div>
+      </Field>
       <Field name={:year}>
         <Label class="label" />
         <div class="select">
@@ -58,7 +70,7 @@ defmodule AgendaWeb.Components.MeetForm do
         </div>
       </Field>
       <div>
-      <button class="button is-link" type="submit">Submit</button>
+        <button class="button is-link" type="submit">Submit</button>
       </div>
     </Form>
     """

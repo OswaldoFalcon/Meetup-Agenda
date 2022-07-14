@@ -3,7 +3,6 @@ defmodule AgendaWeb.Components.DialogMeeting do
   A sample component to generate the form.
   """
   use Surface.LiveComponent
-  alias Agenda.Schedule.Meeting
   alias Agenda.Schedule
   prop title, :string, required: true
   prop ok_label, :string, default: "Ok"

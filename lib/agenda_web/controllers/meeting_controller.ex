@@ -16,7 +16,7 @@ defmodule AgendaWeb.MeetingController do
 
   def create(conn, %{"meeting" => meeting_params}) do
     case Schedule.create_meeting(meeting_params) do
-      {:ok, meeting} ->
+      {:ok, _} ->
         conn
         |> put_flash(:info, "Meeting created successfully.")
         |> redirect(to: "/calendar")

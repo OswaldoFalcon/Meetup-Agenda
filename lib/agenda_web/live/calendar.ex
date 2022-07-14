@@ -1,8 +1,7 @@
 defmodule AgendaWeb.Calendar do
   use Surface.LiveView
   use Timex
-  alias Surface.Components.LivePatch
-  alias AgendaWeb.Components.{CalendarTable, AgendaView, DialogConfig,  FormDialog}
+  alias AgendaWeb.Components.{CalendarTable, AgendaView, DialogConfig, FormDialog}
   @today_date Timex.today()
   data today, :date, default: Timex.today()
   data month, :string, default: @today_date.month |> Timex.month_name()
@@ -45,8 +44,8 @@ defmodule AgendaWeb.Calendar do
       {/if}
       <DialogConfig id="dailog_config" title="Configuration View" agenda={@agenda} calendar={@calendar}> </DialogConfig>
 
-      <FormDialog id= "form_dialog"/>
-      </div>
+      <FormDialog title="Add a Meeting to your Agenda" id="form_dialog" />
+    </div>
     """
   end
 
@@ -80,6 +79,7 @@ defmodule AgendaWeb.Calendar do
     DialogConfig.open("dailog_config")
     {:noreply, socket}
   end
+
   def handle_event("add_meeting", _, socket) do
     FormDialog.open("form_dialog")
     {:noreply, socket}
@@ -98,5 +98,4 @@ defmodule AgendaWeb.Calendar do
        calendar: calendar_state
      )}
   end
-  
 end

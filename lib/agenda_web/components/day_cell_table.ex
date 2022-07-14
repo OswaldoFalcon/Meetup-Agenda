@@ -12,39 +12,41 @@ defmodule AgendaWeb.Components.DayCellTable do
 
   def render(assigns) do
     ~F"""
-    {#if @date.month == Timex.month_to_num(@month)}
-      <td class="month-day">
-        {@date.day} <br>
-        {#for meetings <- Schedule.day_meetings(@date)}
-          <DialogMeeting
-            title={"#{@date.day} #{@month} #{meetings.title}"}
-            id={@date.day}
-            id_db={meetings.id}
-          >
-            <div>
-              <strong>Description:
-              </strong>
-              {meetings.description}
-            </div>
-            <br>
-          </DialogMeeting>
+    <div>
+      {#if @date.month == Timex.month_to_num(@month)}
+        <td class="month-day">
+          {@date.day} <br>
+          {#for meetings <- Schedule.day_meetings(@date)}
+            <DialogMeeting
+              title={"#{@date.day} #{@month} #{meetings.title}"}
+              id={@date.day}
+              id_db={meetings.id}
+            >
+              <div>
+                <strong>Description:
+                </strong>
+                {meetings.description}
+              </div>
+              <br>
+            </DialogMeeting>
 
-          <span :on-click="open_dialog" :values={id: @date.day}>
+            <span :on-click="open_dialog" :values={id: @date.day}>
+              🔵{meetings.title}
+            </span>
+            {@message}
+          {#else}
+          {/for}
+        </td>
+      {#else}
+        <td class="other-month-day">
+          {@date.day} <br>
+          {#for meetings <- Schedule.day_meetings(@date)}
             🔵{meetings.title}
-          </span>
-          {@message}
-        {#else}
-        {/for}
-      </td>
-    {#else}
-      <td class="other-month-day">
-        {@date.day} <br>
-        {#for meetings <- Schedule.day_meetings(@date)}
-          🔵{meetings.title}
-        {#else}
-        {/for}
-      </td>
-    {/if}
+          {#else}
+          {/for}
+        </td>
+      {/if}
+    </div>
     """
   end
 
