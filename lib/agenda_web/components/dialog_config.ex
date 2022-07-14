@@ -1,16 +1,17 @@
-defmodule AgendaWeb.Components.DialogMeeting do
+defmodule AgendaWeb.Components.DialogConfig do
   @moduledoc """
   A sample component to generate the form.
   """
   use Surface.LiveComponent
+  alias Surface.Components.Form.Checkbox
   alias Agenda.Schedule.Meeting
-  alias Agenda.Schedule
   prop title, :string, required: true
   prop ok_label, :string, default: "Ok"
   prop close_label, :string, default: "Close"
   prop ok_click, :event, default: "close"
   prop close_click, :event, default: "close"
-  prop id_db, :integer
+  prop agenda, :boolean
+  prop calendar, :boolean
 
   data show, :boolean, default: false
 
@@ -26,14 +27,21 @@ defmodule AgendaWeb.Components.DialogMeeting do
         </header>
         <section class="modal-card-body">
           <#slot />
+          General view
+          <fieldset>
+            {#if @agenda == true}
+              <Checkbox field="Agenda View" click="agenda_switch" value="true" /> Agenda View <br>
+            {#else}
+              <Checkbox field="Agenda View" click="agenda_switch" value="false" /> Agenda View <br>
+            {/if}
+            {#if @calendar == true}
+              <Checkbox field="Calendar View" click="calendar_switch" value="true" /> Calendar View <br>
+            {#else}
+              <Checkbox field="Calendar View" click="calendar_switch" value="false" /> Calendar View <br>
+            {/if}
+          </fieldset>
         </section>
         <footer class="modal-card-foot" style="justify-content: flex-end">
-          <button class="button is-danger is-outlined" :on-click="delete" :values={id: @id_db}>
-            <span>Delete</span>
-            <span class="icon is-small">
-              <i class="fas fa-times" />
-            </span>
-          </button>
           <button :on-click={@close_click} class="button is-danger">
             {@close_label}
           </button>
@@ -59,12 +67,22 @@ defmodule AgendaWeb.Components.DialogMeeting do
     {:noreply, assign(socket, show: false)}
   end
 
-  def handle_event("delete", values, socket) do
-    id = String.to_integer(values["id"])
-    meeting = Schedule.get_meeting!(id)
+  def handle_event("agenda_switch", _, socket) do
+    agenda_state = change_state(socket.assigns.agenda)
+    send(self(), {:agenda, agenda_state})
+    {:noreply, assign(socket, agenda: agenda_state)}
+  end
 
-    Schedule.delete_meeting(meeting)
+  def handle_event("calendar_switch", _, socket) do
+    calendar_state = change_state(socket.assigns.calendar)
+    send(self(), {:calendar, calendar_state})
+    {:noreply, assign(socket, calendar: calendar_state)}
+  end
 
-    {:noreply, push_redirect(socket, to: "/calendar")}
+  defp change_state(view) do
+    cond do
+      view == true -> false
+      view == false -> true
+    end
   end
 end

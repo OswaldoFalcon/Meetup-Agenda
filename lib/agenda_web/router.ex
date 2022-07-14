@@ -23,6 +23,7 @@ defmodule AgendaWeb.Router do
     resources "/meetings", MeetingController
     live "/demo", Demo
     live "/calendar", Calendar
+
   end
 
   # Other scopes may use custom stacks.

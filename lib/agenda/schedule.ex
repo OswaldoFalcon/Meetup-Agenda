@@ -51,7 +51,7 @@ defmodule Agenda.Schedule do
   """
   def create_meeting(attrs \\ %{}) do
     %Meeting{}
-    |> Meeting.changeset(attrs)
+    |> Meeting.changeset(attrs, :strict)
     |> Repo.insert()
   end
 
@@ -114,10 +114,9 @@ defmodule Agenda.Schedule do
       |> Timex.end_of_month()
       |> Timex.end_of_week(:sun)
 
-    
-      Date.range(from_date, to_date, 1)
-      |> Enum.take(42)
-      |> Enum.chunk_every(7)
+    Date.range(from_date, to_date, 1)
+    |> Enum.take(42)
+    |> Enum.chunk_every(7)
   end
 
   # days for Agenda view
@@ -145,5 +144,4 @@ defmodule Agenda.Schedule do
     meetings = get_dates()
     Enum.filter(meetings, fn meet -> meet.date == date end)
   end
-
 end

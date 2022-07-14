@@ -2,34 +2,51 @@ defmodule AgendaWeb.Calendar do
   use Surface.LiveView
   use Timex
   alias Surface.Components.LivePatch
-  alias AgendaWeb.Components.{CalendarTable, AgendaView, DialogMeeting}
+  alias AgendaWeb.Components.{CalendarTable, AgendaView, DialogConfig,  FormDialog}
   @today_date Timex.today()
   data today, :date, default: Timex.today()
   data month, :string, default: @today_date.month |> Timex.month_name()
   data year, :integer, default: @today_date.year
   data name_days, :list, default: [7, 1, 2, 3, 4, 5, 6] |> Enum.map(&Timex.day_shortname/1)
+  data agenda, :boolean, default: true
+  data calendar, :boolean, default: true
 
   def render(assigns) do
     ~F"""
-    <div class="content"> 
-    <div class="navigation">
-      <div>
-        <p>{@month} {@year}</p>
+    <div class="content">
+      <div class="navigation">
+        <div>
+          <p>{@month} {@year}</p>
+        </div>
+        <div class="arrows">
+          <button class="button is-info is-hovered" :on-click="change_month" phx-value-direction="previous">
+            ←
+          </button>
+          <button class="button is-info is-hovered" :on-click="change_month" phx-value-direction="next">
+            →
+          </button>
+        </div>
+        <div>
+          <button class="button is-info is-hovered" :on-click="add_meeting">
+            <i class="fi fi-br-calendar-plus" />
+          </button>
+          <button class="button is-info is-hovered" :on-click="open_config">
+            <i class="fi fi-rs-settings" />
+          </button>
+        </div>
       </div>
-      <button :on-click="change_month" phx-value-direction="previous">
-        ←
-      </button>
-      <button :on-click="change_month" phx-value-direction="next">
-        →
-      </button>
-      
-    </div>
+      {#if @calendar == true}
+        <CalendarTable today={@today} month={@month} year={@year} name_days={@name_days} />
+      {#else}
+      {/if}
+      {#if @agenda == true}
+        <AgendaView today={@today} month={@month} year={@year} name_days={@name_days} />
+      {#else}
+      {/if}
+      <DialogConfig id="dailog_config" title="Configuration View" agenda={@agenda} calendar={@calendar}> </DialogConfig>
 
-    <div>
-    </div>
-    <CalendarTable today={@today} month={@month} year={@year} name_days={@name_days} />
-    <AgendaView today={@today} month={@month} year={@year} name_days={@name_days} />
-    </div>
+      <FormDialog id= "form_dialog"/>
+      </div>
     """
   end
 
@@ -58,10 +75,28 @@ defmodule AgendaWeb.Calendar do
          )}
     end
   end
-  def handle_info({:today, relative_today}, socket) do
+
+  def handle_event("open_config", _, socket) do
+    DialogConfig.open("dailog_config")
+    {:noreply, socket}
+  end
+  def handle_event("add_meeting", _, socket) do
+    FormDialog.open("form_dialog")
+    {:noreply, socket}
+  end
+
+  def handle_info({:agenda, agenda_state}, socket) do
     {:noreply,
      assign(socket,
-       today: relative_today
+       agenda: agenda_state
      )}
   end
+
+  def handle_info({:calendar, calendar_state}, socket) do
+    {:noreply,
+     assign(socket,
+       calendar: calendar_state
+     )}
+  end
+  
 end

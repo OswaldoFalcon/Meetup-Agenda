@@ -37,4 +37,10 @@ defmodule Agenda.Schedule.Meeting do
     |> cast(attrs, [:week, :day, :month, :year, :title, :description])
     |> validate_required([:week, :day, :month, :year, :title, :description])
   end
+  def changeset(meeting, attrs, :strict) do
+    meeting
+    |> cast(attrs, [:week, :day, :month, :year, :title, :description])
+    |> validate_required([:week, :day, :month, :year, :title, :description])
+    |> unique_constraint(:title)
+  end
 end

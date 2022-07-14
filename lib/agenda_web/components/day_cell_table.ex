@@ -16,9 +16,17 @@ defmodule AgendaWeb.Components.DayCellTable do
       <td class="month-day">
         {@date.day} <br>
         {#for meetings <- Schedule.day_meetings(@date)}
-
-          <DialogMeeting title={"#{@date.day} #{@month} #{meetings.title}"} id={@date.day} id_db={meetings.id} >
-            <div> <strong>Description: </strong> {meetings.description} </div> <br>
+          <DialogMeeting
+            title={"#{@date.day} #{@month} #{meetings.title}"}
+            id={@date.day}
+            id_db={meetings.id}
+          >
+            <div>
+              <strong>Description:
+              </strong>
+              {meetings.description}
+            </div>
+            <br>
           </DialogMeeting>
 
           <span :on-click="open_dialog" :values={id: @date.day}>
@@ -41,9 +49,10 @@ defmodule AgendaWeb.Components.DayCellTable do
   end
 
   def handle_event("open_dialog", values, socket) do
-    id = values["id"] |> String.to_integer
-     DialogMeeting.open(id)
+    id = values["id"] |> String.to_integer()
+    DialogMeeting.open(id)
     {:noreply, socket}
   end
 end
+
 3

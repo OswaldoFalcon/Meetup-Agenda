@@ -11,10 +11,8 @@ defmodule AgendaWeb.Components.CalendarTable do
   prop year, :date
   prop name_days, :list
 
-
   def render(assigns) do
     ~F"""
-   
     <table>
       <thead>
         <tr>
@@ -22,7 +20,7 @@ defmodule AgendaWeb.Components.CalendarTable do
             <th>
               {name}
             </th>
-          {#else} 
+          {#else}
             No items
           {/for}
         </tr>
@@ -30,7 +28,7 @@ defmodule AgendaWeb.Components.CalendarTable do
       {#for week <- Schedule.week_rows(@today)}
         <tr>
           {#for date <- week}
-           <DayCellTable month={@month} date={date} id={date} />
+            <DayCellTable month={@month} date={date} id={date} />
           {#else}
             No items
           {/for}
@@ -39,7 +37,6 @@ defmodule AgendaWeb.Components.CalendarTable do
         No items
       {/for}
     </table>
-  
     """
   end
 end
