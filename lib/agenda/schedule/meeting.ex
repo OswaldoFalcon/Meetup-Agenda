@@ -45,7 +45,7 @@ defmodule Agenda.Schedule.Meeting do
     |> validate_required([:week, :day, :month, :year, :description])
     |> unique_constraint(:title)
   end
-
+  
   def validate(params) do
     changeset =
       %Agenda.Schedule.Meeting{}

@@ -54,7 +54,7 @@ defmodule Agenda.Schedule do
     |> Meeting.changeset(attrs)
     |> Repo.insert()
   end
-
+ 
   def create_meeting_strict(attrs \\ %{}) do
     %Meeting{}
     |> Meeting.changeset(attrs, :strict)

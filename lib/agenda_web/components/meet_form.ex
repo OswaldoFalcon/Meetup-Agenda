@@ -5,7 +5,7 @@ defmodule AgendaWeb.Components.MeetForm do
   use Surface.LiveComponent
   alias Surface.Components.Form
   alias Surface.Components.Form.{Field, TextInput, Label, Select, TextArea, Checkbox}
-  alias Agenda.Schedule
+  alias Agenda.{Schedule, Dates}
   alias Agenda.Schedule.Meeting
 
   # use Surface.Components
@@ -22,6 +22,7 @@ defmodule AgendaWeb.Components.MeetForm do
 
   def render(assigns) do
     ~F"""
+    <div>
     <div :if={@insert_state} class="notification is-success">
       <p>
         Succes you just add it !!</p>
@@ -32,7 +33,7 @@ defmodule AgendaWeb.Components.MeetForm do
       </p>
     </div>
     <div>
-      Schedule mode : 
+      Schedule mode :
       <Checkbox click="db_config" value="false" values={state: "true"} /> Strict Mode <br>
     </div>
     <Form for={@changeset} change="validate" submit="save">
@@ -93,7 +94,7 @@ defmodule AgendaWeb.Components.MeetForm do
         </div>
       </Field>
       <div>
-        <button class="button is-link" type="submit">sda</button>
+        <button class="button is-link" type="submit">Save</button>
       </div>
       <div class="column">
         <pre style="height: 170px; border-radius: 6px; padding: 2.25rem">
@@ -101,6 +102,7 @@ defmodule AgendaWeb.Components.MeetForm do
       </pre>
       </div>
     </Form>
+    </div>
     """
   end
 
@@ -109,7 +111,7 @@ defmodule AgendaWeb.Components.MeetForm do
     {:noreply, assign(socket, changeset: changeset, data: data)}
   end
 
-  def handle_event("db_config", values, socket) do
+  def handle_event("db_config", _, socket) do
     strict_mode = change_state(socket.assigns.strict_mode)
     strict_mode |> IO.puts()
     {:noreply, assign(socket, strict_mode: strict_mode)}
@@ -118,7 +120,7 @@ defmodule AgendaWeb.Components.MeetForm do
   def handle_event("save", %{"meeting" => meeting_params}, socket) do
     case socket.assigns.strict_mode do
       false -> insert_meeting(meeting_params, socket)
-      true -> insert_meeting_strict(meeting_params, socket) 
+      true -> insert_meeting_strict(meeting_params, socket)
     end
   end
 
@@ -129,26 +131,32 @@ defmodule AgendaWeb.Components.MeetForm do
         error = false
         {:noreply, assign(socket, insert_state: insert_state, error: error)}
 
-      {:error, %Ecto.Changeset{} = changeset} ->
+      {:error, %Ecto.Changeset{} } ->
         insert_state = false
         error = true
         {:noreply, assign(socket, error: error, insert_state: insert_state)}
     end
   end
-  defp insert_meeting_strict(meeting_params, socket) do
-    case Schedule.create_meeting_strict(meeting_params) do
-      {:ok, _} ->
-        insert_state = true
-        error = false
-        {:noreply, assign(socket, insert_state: insert_state, error: error)}
 
-      {:error, %Ecto.Changeset{} = changeset} ->
+  defp insert_meeting_strict(meeting_params, socket) do
+    year = meeting_params["year"] |> String.to_atom()
+    month = meeting_params["month"] |> String.to_atom()
+    weekday = meeting_params["day"]
+    week = meeting_params["week"] |> String.to_atom()
+    date = Dates.merge_date(year, month, weekday, week)
+    lenght_date = Schedule.day_meetings(date) |> length
+
+    cond do
+      lenght_date > 0 ->
         insert_state = false
         error = true
         {:noreply, assign(socket, error: error, insert_state: insert_state)}
+
+      lenght_date == 0 ->
+        insert_meeting(meeting_params, socket)
     end
   end
-  
+
   defp change_state(state) do
     cond do
       state == true -> false
