@@ -18,24 +18,28 @@ defmodule AgendaWeb.Components.CalendarTable do
         <tr>
           {#for name <- @name_days}
             <th>
-              {name}
+            <div class="th-title">
+               {name} 
+            </div>
             </th>
           {#else}
             No items
           {/for}
         </tr>
       </thead>
-      {#for week <- Schedule.week_rows(@today)}
-        <tr>
-          {#for date <- week}
-            <DayCellTable month={@month} date={date} id={date} />
-          {#else}
-            No items
-          {/for}
-        </tr>
-      {#else}
-        No items
-      {/for}
+      <tbody>
+        {#for week <- Schedule.week_rows(@today)}
+          <tr>
+            {#for date <- week}
+              <DayCellTable month={@month} date={date} id={date} />
+            {#else}
+              No items
+            {/for}
+          </tr>
+        {#else}
+          No items
+        {/for}
+      </tbody>
     </table>
     """
   end

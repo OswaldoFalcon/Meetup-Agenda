@@ -30,16 +30,21 @@ defmodule AgendaWeb.Calendar do
             <i class="fi fi-br-calendar-plus" />
           </button>
           <button class="button is-info is-hovered" :on-click="open_config">
-            <i class="fi fi-rs-settings" />
+            <i class="fi fi-ss-settings" />
           </button>
         </div>
       </div>
+
       {#if @calendar == true}
-        <CalendarTable today={@today} month={@month} year={@year} name_days={@name_days} />
+        <div class="calendar">
+          <CalendarTable today={@today} month={@month} year={@year} name_days={@name_days} />
+        </div>
       {#else}
       {/if}
       {#if @agenda == true}
+      <div class="agenda">
         <AgendaView today={@today} month={@month} year={@year} name_days={@name_days} />
+      </div>
       {#else}
       {/if}
       <DialogConfig id="dailog_config" title="Configuration View" agenda={@agenda} calendar={@calendar}> </DialogConfig>

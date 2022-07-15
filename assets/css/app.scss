@@ -2,8 +2,10 @@
 
 @import "./calendar.css";
 @import "bulma";
+@import url('https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css');
+@import url('https://cdn-uicons.flaticon.com/uicons-solid-straight/css/uicons-solid-straight.css');
 @import url('https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css');
-@import url('https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'); 
+ 
 $phoenix-orange: #f05423;
 .phx-hero {
   h1 {
@@ -130,3 +132,4 @@ $phoenix-orange: #f05423;
   0% { opacity: 1; }
   100% { opacity: 0; }
 }
+

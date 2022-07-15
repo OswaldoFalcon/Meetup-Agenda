@@ -36,7 +36,8 @@ defmodule Agenda.Schedule.Meeting do
     meeting
     |> cast(attrs, [:week, :day, :month, :year, :title, :description])
     |> validate_required([:title])
-    #|> validate_required([:week, :day, :month, :year, :title, :description])
+
+    # |> validate_required([:week, :day, :month, :year, :title, :description])
   end
 
   def changeset(meeting, attrs, :strict) do
@@ -45,7 +46,7 @@ defmodule Agenda.Schedule.Meeting do
     |> validate_required([:week, :day, :month, :year, :description])
     |> unique_constraint(:title)
   end
-  
+
   def validate(params) do
     changeset =
       %Agenda.Schedule.Meeting{}
@@ -59,7 +60,6 @@ defmodule Agenda.Schedule.Meeting do
 
     {changeset, data}
   end
-  
 
   defp format(meeting) do
     meeting

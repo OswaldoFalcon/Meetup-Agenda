@@ -25,7 +25,6 @@ defmodule AgendaWeb.MeetingController do
         conn
         |> put_flash(:info, "Meeting created successfully.")
         |> redirect(to: "/calendar")
-        
     end
   end
 

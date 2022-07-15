@@ -8,52 +8,62 @@ defmodule AgendaWeb.Components.DayCellTable do
 
   prop date, :date
   prop month, :date
-  data message, :string, default: ""
 
   def render(assigns) do
     ~F"""
-   
-      {#if @date.month == Timex.month_to_num(@month)}
-        <td class="month-day">
-          {@date.day} <br>
-          {#for meetings <- Schedule.day_meetings(@date)}
-            <DialogMeeting
-              title={"#{@date.day} #{@month} #{meetings.title}"}
-              id={@date.day}
-              id_db={meetings.id}
-            >
-              <div>
-                <strong>Description:
-                </strong>
-                {meetings.description}
-              </div>
-              <br>
-            </DialogMeeting>
-
-            <span :on-click="open_dialog" :values={id: @date.day}>
-              🔵{meetings.title}
+    {#if @date.month == Timex.month_to_num(@month)}
+      <td class="month-day">
+        <div class="meeting-day-container">
+          <strong>
+            {@date.day}
+          </strong>
+        </div>
+        {#for meetings <- Schedule.day_meetings(@date)}
+          <DialogMeeting
+            title={"#{@date.day} #{@month} #{meetings.title}"}
+            id={"#{@date.day}-#{meetings.title}"}
+            id_db={meetings.id}
+          >
+            <div>
+              <strong>Description:
+              </strong>
+              {meetings.description}
+            </div>
+            <br>
+          </DialogMeeting>
+          <div class="meeting-title-container">
+            <span :on-click="open_dialog" :values={id: @date.day, title: meetings.title}>
+              <span class="circle"><i class="fi fi-ss-circle-small" />
+              </span>
+              {meetings.title}
             </span>
-            {@message}
-          {#else}
-          {/for}
-        </td>
-      {#else}
-        <td class="other-month-day">
-          {@date.day} <br>
-          {#for meetings <- Schedule.day_meetings(@date)}
-            🔵{meetings.title}
-          {#else}
-          {/for}
-        </td>
-      {/if}
-
+          </div>
+        {#else}
+        {/for}
+      </td>
+    {#else}
+      <td class="other-month-day">
+        <div class="meeting-day-container">
+          <strong>
+            {@date.day}
+          </strong>
+        </div>
+        {#for meetings <- Schedule.day_meetings(@date)}
+          <div class="meeting-title-container">
+            <span class="circle"><i class="fi fi-ss-circle-small" />
+            </span>
+            {meetings.title}
+          </div>
+        {#else}
+        {/for}
+      </td>
+    {/if}
     """
   end
 
   def handle_event("open_dialog", values, socket) do
-    id = values["id"] |> String.to_integer()
+    id = "#{values["id"]}-#{values["title"]}"
     DialogMeeting.open(id)
     {:noreply, socket}
   end
 end
-

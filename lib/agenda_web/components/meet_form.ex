@@ -23,85 +23,89 @@ defmodule AgendaWeb.Components.MeetForm do
   def render(assigns) do
     ~F"""
     <div>
-    <div :if={@insert_state} class="notification is-success">
-      <p>
-        Succes you just add it !!</p>
-    </div>
-    <div :if={@error} class="notification is-danger">
-      <p>
-        Error! Verify your inputs
-      </p>
-    </div>
-    <div>
-      Schedule mode :
-      <Checkbox click="db_config" value="false" values={state: "true"} /> Strict Mode <br>
-    </div>
-    <Form for={@changeset} change="validate" submit="save">
-      <Field name={:title}>
-        <Label class="label" />
-        <div class="control">
-          <TextInput value="title" class="input is-info" />
-        </div>
-      </Field>
-      <Field name={:description}>
-        <Label class="label" />
-        <div class="control">
-          <TextArea class="textarea is-info" rows="4" opts={placeholder: "4 lines of textarea"} />
-        </div>
-      </Field>
-      <Field name={:week}>
-        <Label class="label" />
-        <div class="select">
-          <Select options={First: "first", Second: "second", Third: "third", fourth: "fourth", fifth: "fifth"} />
-        </div>
-      </Field>
-      <Field name={:day}>
-        <Label class="label" />
-        <div class="select">
-          <Select options={
-            monday: "monday",
-            tuesday: "tuesday",
-            wednesday: "thursday",
-            friday: "friday",
-            saturday: "saturday",
-            sunday: "sunday"
-          } />
-        </div>
-      </Field>
-      <Field name={:month}>
-        <Label class="label" />
-        <div class="select">
-          <Select options={
-            january: "january",
-            february: "february",
-            march: "march",
-            april: "april",
-            may: "may",
-            june: "june",
-            july: "july",
-            august: "august",
-            september: "september",
-            october: "october",
-            november: "november",
-            december: "december"
-          } />
-        </div>
-      </Field>
-      <Field name={:year}>
-        <Label class="label" />
-        <div class="select">
-          <Select options={"2022": "2022", "2023": "2023", "2024": "2024", "2025": "2025", "2026": "2026"} />
-        </div>
-      </Field>
-      <div>
-        <button class="button is-link" type="submit">Save</button>
+      <div :if={@insert_state} class="notification is-success">
+        <p>
+          Succes you just add it !!</p>
       </div>
-      <div class="column">
-        <pre style="height: 170px; border-radius: 6px; padding: 2.25rem">
+      <div :if={@error} class="notification is-danger">
+        <p>
+          Error! Verify your inputs
+        </p>
+      </div>
+      <div>
+        Schedule mode :
+        {#if @strict_mode == false}
+          <Checkbox click="db_config" value="false" values={state: "false"} /> Strict Mode <br>
+        {#else}
+          <Checkbox click="db_config" value="true" values={state: "true"} /> Strict Mode <br>
+        {/if}
+      </div>
+      <Form for={@changeset} change="validate" submit="save">
+        <Field name={:title}>
+          <Label class="label" />
+          <div class="control">
+            <TextInput class="input is-info" opts={placeholder: "title"} />
+          </div>
+        </Field>
+        <Field name={:description}>
+          <Label class="label" />
+          <div class="control">
+            <TextArea class="textarea is-info" rows="4" opts={placeholder: "4 lines of textarea"} />
+          </div>
+        </Field>
+        <Field name={:week}>
+          <Label class="label" />
+          <div class="select">
+            <Select options={First: "first", Second: "second", Third: "third", fourth: "fourth", fifth: "fifth"} />
+          </div>
+        </Field>
+        <Field name={:day}>
+          <Label class="label" />
+          <div class="select">
+            <Select options={
+              monday: "monday",
+              tuesday: "tuesday",
+              wednesday: "thursday",
+              friday: "friday",
+              saturday: "saturday",
+              sunday: "sunday"
+            } />
+          </div>
+        </Field>
+        <Field name={:month}>
+          <Label class="label" />
+          <div class="select">
+            <Select options={
+              january: "january",
+              february: "february",
+              march: "march",
+              april: "april",
+              may: "may",
+              june: "june",
+              july: "july",
+              august: "august",
+              september: "september",
+              october: "october",
+              november: "november",
+              december: "december"
+            } />
+          </div>
+        </Field>
+        <Field name={:year}>
+          <Label class="label" />
+          <div class="select">
+            <Select options={"2022": "2022", "2023": "2023", "2024": "2024", "2025": "2025", "2026": "2026"} />
+          </div>
+        </Field>
+        <div>
+          <button class="button is-link" type="submit">Save</button>
+        </div>
+        <div class="column">
+          <pre style="height: 170px; border-radius: 6px; padding: 2.25rem">
       {@data}
       </pre>
-      </div>
-    </Form>
+        </div>
+      </Form>
     </div>
     """
   end
@@ -131,7 +135,7 @@ defmodule AgendaWeb.Components.MeetForm do
         error = false
         {:noreply, assign(socket, insert_state: insert_state, error: error)}
 
-      {:error, %Ecto.Changeset{} } ->
+      {:error, %Ecto.Changeset{}} ->
         insert_state = false
         error = true
         {:noreply, assign(socket, error: error, insert_state: insert_state)}

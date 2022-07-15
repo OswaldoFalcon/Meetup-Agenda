@@ -49,6 +49,6 @@ defmodule AgendaWeb.Components.FormDialog do
   # Default event handlers
 
   def handle_event("close", _, socket) do
-    {:noreply,  push_redirect(socket, to: "/calendar")}
+    {:noreply, push_redirect(socket, to: "/calendar")}
   end
 end

@@ -1,3 +1,6 @@
+.calendar {
+  width: 100%;
+}
 .navigation{
   display:  flex;
   justify-content: space-around;
@@ -10,10 +13,16 @@ th {
   width: 14.28%;
   border: solid rgb(177, 176, 176);
   border-width: 0px 0px 3px 0px;
-  
+}
+
+.th-title{
+  color:rgb(69, 114, 169);
+  display: flex;
+  justify-content: center;
 }
 
 td {
+  
   border: solid rgb(215, 215, 215);
   border-width: 0px 1px 1px 1px;
 }
@@ -25,6 +34,14 @@ td {
   background-color: rgb(255, 255, 255);
 }
 
+
+.circle{
+   color: rgb(16, 171, 96);
+}
+.meeting-day-container{
+  display: flex;
+  justify-content: center;
+}
 .agenda{
 
   border: solid rgb(177, 176, 176);
