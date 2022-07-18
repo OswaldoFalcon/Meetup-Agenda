@@ -1,4 +1,7 @@
 defmodule AgendaWeb.Demo do
+  @moduledoc """
+  Module demo
+  """
   use Surface.LiveView
 
   alias AgendaWeb.Components.{Hero}

@@ -1,4 +1,7 @@
 defmodule Agenda.Schedule.Meeting do
+  @moduledoc """
+  This module build the Schema for Ecto
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -35,16 +38,7 @@ defmodule Agenda.Schedule.Meeting do
   def changeset(meeting, attrs) do
     meeting
     |> cast(attrs, [:week, :day, :month, :year, :title, :description])
-    |> validate_required([:title])
-
-    # |> validate_required([:week, :day, :month, :year, :title, :description])
-  end
-
-  def changeset(meeting, attrs, :strict) do
-    meeting
-    |> cast(attrs, [:week, :day, :month, :year, :title, :description])
-    |> validate_required([:week, :day, :month, :year, :description])
-    |> unique_constraint(:title)
+    |> validate_required([:week, :day, :month, :year, :description, :title])
   end
 
   def validate(params) do

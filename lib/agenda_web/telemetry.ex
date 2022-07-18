@@ -1,4 +1,7 @@
 defmodule AgendaWeb.Telemetry do
+  @moduledoc """
+  Module Telemetry
+  """
   use Supervisor
   import Telemetry.Metrics
 

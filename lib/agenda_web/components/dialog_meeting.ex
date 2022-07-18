@@ -28,7 +28,7 @@ defmodule AgendaWeb.Components.DialogMeeting do
         </section>
         <footer class="modal-card-foot" style="justify-content: flex-end">
           <button class="button is-danger is-outlined" :on-click="delete" :values={id: @id_db}>
-            <span>Delete</span>
+            <span>Delete Meeting</span>
             <span class="icon is-small">
               <i class="fas fa-times" />
             </span>

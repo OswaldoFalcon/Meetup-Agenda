@@ -55,12 +55,6 @@ defmodule Agenda.Schedule do
     |> Repo.insert()
   end
 
-  def create_meeting_strict(attrs \\ %{}) do
-    %Meeting{}
-    |> Meeting.changeset(attrs, :strict)
-    |> Repo.insert()
-  end
-
   def insert_meeting(change) do
     Repo.insert(change)
   end
@@ -153,5 +147,12 @@ defmodule Agenda.Schedule do
   def day_meetings(date) do
     meetings = get_dates()
     Enum.filter(meetings, fn meet -> meet.date == date end)
+  end
+
+  def validate_date(year, month, weekday, range) do
+    case Dates.merge_date(year, month, weekday, range) do
+      :error_date_dont_exist -> false
+      _ -> true
+    end
   end
 end

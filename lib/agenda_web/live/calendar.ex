@@ -1,4 +1,8 @@
 defmodule AgendaWeb.Calendar do
+  @moduledoc """
+  Calendar Componenet, this is the main UI 
+  where the other componenets converge.
+  """
   use Surface.LiveView
   use Timex
   alias AgendaWeb.Components.{CalendarTable, AgendaView, DialogConfig, FormDialog}
@@ -37,14 +41,14 @@ defmodule AgendaWeb.Calendar do
 
       {#if @calendar == true}
         <div class="calendar">
-          <CalendarTable today={@today} month={@month} year={@year} name_days={@name_days} />
+          <CalendarTable today={@today} month={@month} year={@year} name_days={@name_days} id="calendar" />
         </div>
       {#else}
       {/if}
       {#if @agenda == true}
-      <div class="agenda">
-        <AgendaView today={@today} month={@month} year={@year} name_days={@name_days} />
-      </div>
+        <div class="agenda">
+          <AgendaView today={@today} month={@month} year={@year} name_days={@name_days} />
+        </div>
       {#else}
       {/if}
       <DialogConfig id="dailog_config" title="Configuration View" agenda={@agenda} calendar={@calendar}> </DialogConfig>

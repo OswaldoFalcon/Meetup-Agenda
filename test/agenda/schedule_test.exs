@@ -1,7 +1,7 @@
 defmodule Agenda.ScheduleTest do
   use Agenda.DataCase
 
-  alias Agenda.Schedule
+  alias Agenda.{Schedule, Dates}
 
   describe "meetings" do
     alias Agenda.Schedule.Meeting
@@ -22,21 +22,21 @@ defmodule Agenda.ScheduleTest do
 
     test "create_meeting/1 with valid data creates a meeting" do
       valid_attrs = %{
-        day: "some day",
+        day: :tuesday,
         description: "some description",
-        month: "some month",
+        month: :july,
         title: "some title",
-        week: "some week",
-        year: 42
+        week: :second,
+        year: :"2022"
       }
 
       assert {:ok, %Meeting{} = meeting} = Schedule.create_meeting(valid_attrs)
-      assert meeting.day == "some day"
+      assert meeting.day == :tuesday
       assert meeting.description == "some description"
-      assert meeting.month == "some month"
+      assert meeting.month == :july
       assert meeting.title == "some title"
-      assert meeting.week == "some week"
-      assert meeting.year == 42
+      assert meeting.week == :second
+      assert meeting.year == :"2022"
     end
 
     test "create_meeting/1 with invalid data returns error changeset" do
@@ -47,21 +47,21 @@ defmodule Agenda.ScheduleTest do
       meeting = meeting_fixture()
 
       update_attrs = %{
-        day: "some updated day",
+        day: :tuesday,
         description: "some updated description",
-        month: "some updated month",
+        month: :july,
         title: "some updated title",
-        week: "some updated week",
-        year: 43
+        week: :second,
+        year: :"2022"
       }
 
       assert {:ok, %Meeting{} = meeting} = Schedule.update_meeting(meeting, update_attrs)
-      assert meeting.day == "some updated day"
+      assert meeting.day == :tuesday
       assert meeting.description == "some updated description"
-      assert meeting.month == "some updated month"
+      assert meeting.month == :july
       assert meeting.title == "some updated title"
-      assert meeting.week == "some updated week"
-      assert meeting.year == 43
+      assert meeting.week == :second
+      assert meeting.year == :"2022"
     end
 
     test "update_meeting/2 with invalid data returns error changeset" do
@@ -79,6 +79,112 @@ defmodule Agenda.ScheduleTest do
     test "change_meeting/1 returns a meeting changeset" do
       meeting = meeting_fixture()
       assert %Ecto.Changeset{} = Schedule.change_meeting(meeting)
+    end
+
+    test "rows for the calendar" do
+      rows = Schedule.week_rows(~D[2022-07-18])
+      assert Schedule.week_rows(~D[2022-07-01]) == rows
+      assert Schedule.week_rows(~D[2022-07-31]) == rows
+      assert Schedule.week_rows(~D[2022-08-31]) == rows == false
+    end
+
+    test "Merge dates with valid data" do
+      params = %{
+        day: :tuesday,
+        month: :july,
+        week: :second,
+        year: :"2022"
+      }
+
+      assert Dates.merge_date(params.year, params.month, params.day, params.week) ==
+               ~D[2022-07-12]
+    end
+
+    test "Merge dates with invalid data" do
+      params = %{
+        day: :monday,
+        month: :july,
+        week: :fifth,
+        year: :"2022"
+      }
+
+      assert Dates.merge_date(params.year, params.month, params.day, params.week) ==
+               :error_date_dont_exist
+    end
+
+    test "Days in the month" do
+      days = Schedule.days_in_month(~D[2022-07-18])
+      assert length(days) == 31
+      days = Schedule.days_in_month(~D[2022-08-18])
+      assert length(days) == 31
+      days = Schedule.days_in_month(~D[2022-09-18])
+      assert length(days) == 30
+    end
+
+    test "Get meetings dates info" do
+      meet = meeting_fixture()
+
+      params = %{
+        date: ~D[2022-07-12],
+        description: "some description",
+        id: meet.id,
+        title: "some title"
+      }
+
+      assert [params] == Schedule.get_dates()
+    end
+
+    test "day that fits with a meeting" do
+      meet = meeting_fixture()
+
+      params = %{
+        date: ~D[2022-07-12],
+        description: "some description",
+        id: meet.id,
+        title: "some title"
+      }
+
+      assert Schedule.day_meetings(~D[2022-07-12]) == [params]
+    end
+
+    test "validate date with valid data" do
+      params = %{
+        day: :monday,
+        month: :july,
+        week: :first,
+        year: :"2022"
+      }
+
+      assert Schedule.validate_date(params.year, params.month, params.day, params.week) == true
+
+      params = %{
+        day: :monday,
+        month: :july,
+        week: :third,
+        year: :"2022"
+      }
+
+      assert Schedule.validate_date(params.year, params.month, params.day, params.week) == true
+
+      params = %{
+        day: :monday,
+        month: :july,
+        week: :fourth,
+        year: :"2022"
+      }
+
+      assert Schedule.validate_date(params.year, params.month, params.day, params.week) == true
+    end
+
+    test "validate date with invalid data" do
+      params = %{
+        day: :monday,
+        month: :july,
+        week: :fifth,
+        year: :"2022"
+      }
+
+      assert Schedule.validate_date(params.year, params.month, params.day, params.week) == false
     end
   end
 end

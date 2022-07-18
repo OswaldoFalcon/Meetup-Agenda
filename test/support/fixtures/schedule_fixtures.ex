@@ -11,12 +11,12 @@ defmodule Agenda.ScheduleFixtures do
     {:ok, meeting} =
       attrs
       |> Enum.into(%{
-        day: "some day",
+        day: :tuesday,
         description: "some description",
-        month: "some month",
+        month: :july,
         title: "some title",
-        week: "some week",
-        year: 42
+        week: :second,
+        year: :"2022"
       })
       |> Agenda.Schedule.create_meeting()
 
