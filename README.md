@@ -8,6 +8,13 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000/calendar`](http://localhost:4000/calendar) from your browser.
 
+![image](https://user-images.githubusercontent.com/77717622/179638643-ed5f6305-e088-4280-ad45-6d701a74fd7f.png)
+
+
+
+
+
+
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
 ## Learn more
