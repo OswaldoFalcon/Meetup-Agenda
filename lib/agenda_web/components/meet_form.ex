@@ -70,7 +70,7 @@ defmodule AgendaWeb.Components.MeetForm do
               wednesday: "wednesday",
               thursday: "thursday",
               friday: "friday",
-              saturday: "saturday", 
+              saturday: "saturday",
               sunday: "sunday"
             } />
           </div>
