@@ -22,7 +22,7 @@ defmodule AgendaWeb.Calendar do
           <p>{@month} {@year}</p>
         </div>
         <div class="arrows">
-          <button class="button is-info is-hovered" :on-click="change_month" phx-value-direction="previous">
+          <button class="button is-info is-hovered" :on-click="change_month" phx-value-direction="previous" id = "previous">
             ←
           </button>
           <button class="button is-info is-hovered" :on-click="change_month" phx-value-direction="next">
