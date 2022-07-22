@@ -56,6 +56,7 @@ defmodule AgendaWeb.Components.CalendarTable do
                         class="meeting-title-container"
                         :on-click="open_dialog"
                         :values={id: date.day, title: meetings.title}
+                        id={"meet-#{date.day}-#{meetings.title}"}
                       >
                         <span class="circle"><i class="fi fi-ss-circle-small" />
                         </span>

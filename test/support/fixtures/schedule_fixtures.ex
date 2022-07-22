@@ -14,8 +14,24 @@ defmodule Agenda.ScheduleFixtures do
         day: :tuesday,
         description: "some description",
         month: :july,
-        title: "some title",
+        title: "title",
         week: :second,
+        year: :"2022"
+      })
+      |> Agenda.Schedule.create_meeting()
+
+    meeting
+  end
+
+  def meeting_fixture_august(attrs \\ %{}) do
+    {:ok, meeting} =
+      attrs
+      |> Enum.into(%{
+        day: :monday,
+        description: "some description",
+        month: :august,
+        title: "some title",
+        week: :first,
         year: :"2022"
       })
       |> Agenda.Schedule.create_meeting()

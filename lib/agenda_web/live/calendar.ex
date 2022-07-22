@@ -1,6 +1,6 @@
 defmodule AgendaWeb.Calendar do
   @moduledoc """
-  Calendar Componenet, this is the main UI 
+  Calendar Componenet, this is the main UI
   where the other componenets converge.
   """
   use Surface.LiveView
@@ -30,15 +30,20 @@ defmodule AgendaWeb.Calendar do
           >
             ←
           </button>
-          <button class="button is-info is-hovered" :on-click="change_month" phx-value-direction="next">
+          <button
+            class="button is-info is-hovered"
+            :on-click="change_month"
+            phx-value-direction="next"
+            id="next"
+          >
             →
           </button>
         </div>
         <div>
-          <button class="button is-info is-hovered" :on-click="add_meeting">
+          <button class="button is-info is-hovered" :on-click="add_meeting" id="open_meeting_form">
             <i class="fi fi-br-calendar-plus" />
           </button>
-          <button class="button is-info is-hovered" :on-click="open_config">
+          <button class="button is-info is-hovered" :on-click="open_config" id="open_config">
             <i class="fi fi-ss-settings" />
           </button>
         </div>

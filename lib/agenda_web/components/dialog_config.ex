@@ -23,26 +23,26 @@ defmodule AgendaWeb.Components.DialogConfig do
       <div class="modal-background" />
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title">{@title}</p>
+          <p class="modal-card-title" id="title">{@title}</p>
         </header>
         <section class="modal-card-body">
           <#slot />
           General view
           <fieldset>
             {#if @agenda == true}
-              <Checkbox field="Agenda View" click="agenda_switch" value="true" /> Agenda View <br>
+              <Checkbox field="Agenda View" click="agenda_switch" value="true" id="agenda" /> Agenda View <br>
             {#else}
-              <Checkbox field="Agenda View" click="agenda_switch" value="false" /> Agenda View <br>
+              <Checkbox field="Agenda View" click="agenda_switch" value="false" id="agenda" /> Agenda View <br>
             {/if}
             {#if @calendar == true}
-              <Checkbox field="Calendar View" click="calendar_switch" value="true" /> Calendar View <br>
+              <Checkbox field="Calendar View" click="calendar_switch" value="true" id="calendar" /> Calendar View <br>
             {#else}
-              <Checkbox field="Calendar View" click="calendar_switch" value="false" /> Calendar View <br>
+              <Checkbox field="Calendar View" click="calendar_switch" value="false" id="calendar" /> Calendar View <br>
             {/if}
           </fieldset>
         </section>
         <footer class="modal-card-foot" style="justify-content: flex-end">
-          <button :on-click={@close_click} class="button is-danger">
+          <button :on-click={@close_click} class="button is-danger" id="close_dialog">
             {@close_label}
           </button>
         </footer>
@@ -55,10 +55,6 @@ defmodule AgendaWeb.Components.DialogConfig do
 
   def open(dialog_id) do
     send_update(__MODULE__, id: dialog_id, show: true)
-  end
-
-  def close(dialog_id) do
-    send_update(__MODULE__, id: dialog_id, show: false)
   end
 
   # Default event handlers

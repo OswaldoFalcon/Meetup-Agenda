@@ -1,7 +1,7 @@
 defmodule Agenda.Dates do
   @moduledoc """
   The Date Module transforms the input
-  to a Date type 
+  to a Date type
   """
   def merge_date(year, month, weekday, :first), do: find_date(year, month, weekday, 1..7)
   def merge_date(year, month, weekday, :second), do: find_date(year, month, weekday, 8..14)
@@ -28,8 +28,7 @@ defmodule Agenda.Dates do
 
       Date.new!(year, month, day_number)
     rescue
-      FunctionClauseError -> :error_date_dont_exist
-      _ -> "error en fecha"
+      _ -> :error_date_dont_exist
     end
   end
 

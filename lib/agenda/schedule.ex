@@ -55,9 +55,9 @@ defmodule Agenda.Schedule do
     |> Repo.insert()
   end
 
-  def insert_meeting(change) do
-    Repo.insert(change)
-  end
+  # def insert_meeting(change) do
+  #   Repo.insert(change)
+  # end
 
   @doc """
   Updates a meeting.
