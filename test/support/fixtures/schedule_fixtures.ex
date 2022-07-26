@@ -23,6 +23,26 @@ defmodule Agenda.ScheduleFixtures do
     meeting
   end
 
+  def meeting_fixture_dynamic(attrs \\ %{}) do
+    today = Timex.today()
+    month = today.month |> Timex.month_name() |> String.downcase() |> String.to_atom()
+    year = today.year |> Integer.to_string() |> String.to_atom()
+
+    {:ok, meeting} =
+      attrs
+      |> Enum.into(%{
+        day: :tuesday,
+        description: "some description",
+        month: month,
+        title: "title",
+        week: :second,
+        year: year
+      })
+      |> Agenda.Schedule.create_meeting()
+
+    meeting
+  end
+
   def meeting_fixture_august(attrs \\ %{}) do
     {:ok, meeting} =
       attrs

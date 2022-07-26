@@ -33,24 +33,34 @@ defmodule AgendaWeb.CalendarTest do
     end
 
     test "Button Open Meeting Dialog", %{conn: conn} do
-      meeting_fixture()
+      meeting_fixture_dynamic()
+      id = Schedule.list_meetings() |> List.last() |> Map.get(:id)
+      day = Schedule.get_dates() |> List.last() |> Map.fetch!(:date) |> Map.fetch!(:day)
+      month = Schedule.list_meetings() |> List.last() |> Map.get(:month) |> Atom.to_string()
+
+      month =
+        with <<first::utf8, rest::binary>> <- month, do: String.upcase(<<first::utf8>>) <> rest
+
       {:ok, view, _html} = live(conn, "/calendar")
+      meet = "#meet-" <> "#{id}"
+      html = "<p class=\"modal-card-title\"> #{month} #{day} -  title</p>"
 
       assert view
-             |> element("#meet-12-title")
-             |> render_click =~ "<p class=\"modal-card-title\"> July 12 -  title</p>"
+             |> element(meet)
+             |> render_click =~ html
     end
 
     test "Button Delete a Meeting ", %{conn: conn} do
-      meeting_fixture()
+      meeting_fixture_dynamic()
       id = Schedule.list_meetings() |> List.last() |> Map.get(:id)
       close = "#close" <> "#{id}"
       delete = "#delete" <> "#{id}"
+      meet = "#meet-" <> "#{id}"
       # open the Dialog Meeting
       {:ok, view, _html} = live(conn, "/calendar")
 
       view
-      |> element("#meet-12-title")
+      |> element(meet)
       |> render_click
 
       # close Meeting
@@ -60,7 +70,7 @@ defmodule AgendaWeb.CalendarTest do
 
       # Reopen Meeting
       view
-      |> element("#meet-12-title")
+      |> element(meet)
       |> render_click
 
       # delete Meeting
@@ -70,7 +80,7 @@ defmodule AgendaWeb.CalendarTest do
 
       # check if meet exist ?
       {:ok, view, _html} = live(conn, "/calendar")
-      element = view |> has_element?("#meet-12-title")
+      element = view |> has_element?(meet)
       assert false == element
     end
 
@@ -178,7 +188,7 @@ defmodule AgendaWeb.CalendarTest do
     test "Submit day occupied on strict-mode", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/calendar")
       meeting_fixture()
-
+      # enable strict mode
       view
       |> element("#strict_mode")
       |> render_click
@@ -202,6 +212,10 @@ defmodule AgendaWeb.CalendarTest do
 
     test "Submit day not occupied strict-mode", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/calendar")
+      # enable strict mode
+      view
+      |> element("#strict_mode")
+      |> render_click
 
       view
       |> form("form", %{
@@ -221,6 +235,10 @@ defmodule AgendaWeb.CalendarTest do
 
     test "Submit invalid data strict-mode", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/calendar")
+      # enable strict mode
+      view
+      |> element("#strict_mode")
+      |> render_click
 
       view
       |> form("form", %{
