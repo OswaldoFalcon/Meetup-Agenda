@@ -31,14 +31,18 @@ defmodule AgendaWeb.Components.DialogMeeting do
             class="button is-danger is-outlined"
             :on-click="delete"
             :values={id: @id_db}
-            id="delete-meeting"
+            id={"delete" <> Integer.to_string(@id_db)}
           >
             <span>Delete Meeting</span>
             <span class="icon is-small">
               <i class="fas fa-times" />
             </span>
           </button>
-          <button :on-click={@close_click} class="button is-danger" id="close-meeting">
+          <button
+            :on-click={@close_click}
+            class="button is-danger"
+            id={"close" <> Integer.to_string(@id_db)}
+          >
             {@close_label}
           </button>
         </footer>

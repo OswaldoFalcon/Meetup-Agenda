@@ -18,11 +18,11 @@ defmodule AgendaWeb.Components.MeetForm do
   def render(assigns) do
     ~F"""
     <div>
-      <div :if={@insert_state} class="notification is-success">
+      <div :if={@insert_state} class="notification is-success" id="succes-BD">
         <p>
           Succes you just add it !!</p>
       </div>
-      <div :if={@error} class="notification is-danger">
+      <div :if={@error} class="notification is-danger" id="error-BD">
         <p>
           Error! Verify your inputs
         </p>
@@ -107,7 +107,6 @@ defmodule AgendaWeb.Components.MeetForm do
 
   def handle_event("db_config", _, socket) do
     strict_mode = change_state(socket.assigns.strict_mode)
-    strict_mode |> IO.puts()
     {:noreply, assign(socket, strict_mode: strict_mode)}
   end
 

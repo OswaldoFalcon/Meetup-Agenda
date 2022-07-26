@@ -6,6 +6,8 @@ defmodule AgendaWeb.Calendar do
   use Surface.LiveView
   use Timex
   alias AgendaWeb.Components.{CalendarTable, AgendaView, DialogConfig, FormDialog}
+  alias Agenda.Schedule
+
   @today_date Timex.today()
   data today, :date, default: Timex.today()
   data month, :string, default: @today_date.month |> Timex.month_name()
@@ -50,13 +52,13 @@ defmodule AgendaWeb.Calendar do
       </div>
 
       {#if @calendar == true}
-        <div class="calendar">
+        <div class="calendar" id="calendar_table">
           <CalendarTable today={@today} month={@month} year={@year} name_days={@name_days} id="calendar" />
         </div>
       {#else}
       {/if}
       {#if @agenda == true}
-        <div class="agenda">
+        <div class="agenda" id="agenda">
           <AgendaView today={@today} month={@month} year={@year} name_days={@name_days} />
         </div>
       {#else}
@@ -71,7 +73,7 @@ defmodule AgendaWeb.Calendar do
   def handle_event("change_month", %{"direction" => direction}, socket) do
     case direction do
       "next" ->
-        new_today = Timex.shift(socket.assigns.today, months: 1)
+        new_today = Schedule.next_month(socket.assigns.today)
 
         {:noreply,
          assign(
@@ -82,7 +84,7 @@ defmodule AgendaWeb.Calendar do
          )}
 
       "previous" ->
-        new_today = Timex.shift(socket.assigns.today, months: -1)
+        new_today = Schedule.previous_month(socket.assigns.today)
 
         {:noreply,
          assign(

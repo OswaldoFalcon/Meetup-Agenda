@@ -30,14 +30,14 @@ defmodule AgendaWeb.Components.DialogConfig do
           General view
           <fieldset>
             {#if @agenda == true}
-              <Checkbox field="Agenda View" click="agenda_switch" value="true" id="agenda" /> Agenda View <br>
+              <Checkbox field="Agenda View" click="agenda_switch" value="true" id="agenda_off" /> Agenda View <br>
             {#else}
-              <Checkbox field="Agenda View" click="agenda_switch" value="false" id="agenda" /> Agenda View <br>
+              <Checkbox field="Agenda View" click="agenda_switch" value="false" id="agenda_on" /> Agenda View <br>
             {/if}
             {#if @calendar == true}
-              <Checkbox field="Calendar View" click="calendar_switch" value="true" id="calendar" /> Calendar View <br>
+              <Checkbox field="Calendar View" click="calendar_switch" value="true" id="calendar_off" /> Calendar View <br>
             {#else}
-              <Checkbox field="Calendar View" click="calendar_switch" value="false" id="calendar" /> Calendar View <br>
+              <Checkbox field="Calendar View" click="calendar_switch" value="false" id="calendar_on" /> Calendar View <br>
             {/if}
           </fieldset>
         </section>

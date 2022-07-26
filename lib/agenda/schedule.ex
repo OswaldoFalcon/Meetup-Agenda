@@ -155,4 +155,12 @@ defmodule Agenda.Schedule do
       _ -> true
     end
   end
+
+  def next_month(date) do
+    Timex.shift(date, months: 1)
+  end
+
+  def previous_month(date) do
+    Timex.shift(date, months: -1)
+  end
 end
