@@ -55,9 +55,9 @@ defmodule Agenda.Schedule do
     |> Repo.insert()
   end
 
-  def insert_meeting(change) do
-    Repo.insert(change)
-  end
+  # def insert_meeting(change) do
+  #   Repo.insert(change)
+  # end
 
   @doc """
   Updates a meeting.
@@ -154,5 +154,13 @@ defmodule Agenda.Schedule do
       :error_date_dont_exist -> false
       _ -> true
     end
+  end
+
+  def next_month(date) do
+    Timex.shift(date, months: 1)
+  end
+
+  def previous_month(date) do
+    Timex.shift(date, months: -1)
   end
 end

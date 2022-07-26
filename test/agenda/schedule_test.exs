@@ -25,7 +25,7 @@ defmodule Agenda.ScheduleTest do
         day: :tuesday,
         description: "some description",
         month: :july,
-        title: "some title",
+        title: "title",
         week: :second,
         year: :"2022"
       }
@@ -34,7 +34,7 @@ defmodule Agenda.ScheduleTest do
       assert meeting.day == :tuesday
       assert meeting.description == "some description"
       assert meeting.month == :july
-      assert meeting.title == "some title"
+      assert meeting.title == "title"
       assert meeting.week == :second
       assert meeting.year == :"2022"
     end
@@ -128,7 +128,7 @@ defmodule Agenda.ScheduleTest do
         date: ~D[2022-07-12],
         description: "some description",
         id: meet.id,
-        title: "some title"
+        title: "title"
       }
 
       assert [params] == Schedule.get_dates()
@@ -141,7 +141,7 @@ defmodule Agenda.ScheduleTest do
         date: ~D[2022-07-12],
         description: "some description",
         id: meet.id,
-        title: "some title"
+        title: "title"
       }
 
       assert Schedule.day_meetings(~D[2022-07-12]) == [params]

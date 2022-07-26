@@ -27,7 +27,7 @@ defmodule AgendaWeb.Components.FormDialog do
           <MeetForm id="form" />
         </section>
         <footer class="modal-card-foot" style="justify-content: flex-end">
-          <button :on-click={@close_click} class="button is-danger">
+          <button :on-click={@close_click} class="button is-danger" id="close_meeting_form">
             {@close_label}
           </button>
         </footer>
@@ -40,10 +40,6 @@ defmodule AgendaWeb.Components.FormDialog do
 
   def open(dialog_id) do
     send_update(__MODULE__, id: dialog_id, show: true)
-  end
-
-  def close(dialog_id) do
-    send_update(__MODULE__, id: dialog_id, show: false)
   end
 
   # Default event handlers

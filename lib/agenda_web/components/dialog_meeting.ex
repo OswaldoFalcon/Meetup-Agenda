@@ -27,13 +27,22 @@ defmodule AgendaWeb.Components.DialogMeeting do
           <#slot />
         </section>
         <footer class="modal-card-foot" style="justify-content: flex-end">
-          <button class="button is-danger is-outlined" :on-click="delete" :values={id: @id_db}>
+          <button
+            class="button is-danger is-outlined"
+            :on-click="delete"
+            :values={id: @id_db}
+            id={"delete" <> Integer.to_string(@id_db)}
+          >
             <span>Delete Meeting</span>
             <span class="icon is-small">
               <i class="fas fa-times" />
             </span>
           </button>
-          <button :on-click={@close_click} class="button is-danger">
+          <button
+            :on-click={@close_click}
+            class="button is-danger"
+            id={"close" <> Integer.to_string(@id_db)}
+          >
             {@close_label}
           </button>
         </footer>
@@ -46,10 +55,6 @@ defmodule AgendaWeb.Components.DialogMeeting do
 
   def open(dialog_id) do
     send_update(__MODULE__, id: dialog_id, show: true)
-  end
-
-  def close(dialog_id) do
-    send_update(__MODULE__, id: dialog_id, show: false)
   end
 
   # Default event handlers

@@ -40,26 +40,4 @@ defmodule Agenda.Schedule.Meeting do
     |> cast(attrs, [:week, :day, :month, :year, :title, :description])
     |> validate_required([:week, :day, :month, :year, :description, :title])
   end
-
-  def validate(params) do
-    changeset =
-      %Agenda.Schedule.Meeting{}
-      |> changeset(params)
-      |> Map.put(:action, :validate)
-
-    data =
-      changeset
-      |> Ecto.Changeset.apply_changes()
-      |> format()
-
-    {changeset, data}
-  end
-
-  defp format(meeting) do
-    meeting
-    |> Map.from_struct()
-    |> Map.delete(:__meta__)
-    |> Map.delete(:id)
-    |> Jason.encode!(pretty: true)
-  end
 end

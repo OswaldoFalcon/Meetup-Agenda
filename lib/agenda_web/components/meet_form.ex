@@ -15,19 +15,14 @@ defmodule AgendaWeb.Components.MeetForm do
   data insert_state, :boolean, default: false
   data strict_mode, :boolean, default: false
 
-  def mount(_params, _session, socket) do
-    {changeset, data} = Meeting.validate(%{"title" => "John Doe"})
-    {:ok, assign(socket, %{changeset: changeset, data: data})}
-  end
-
   def render(assigns) do
     ~F"""
     <div>
-      <div :if={@insert_state} class="notification is-success">
+      <div :if={@insert_state} class="notification is-success" id="succes-BD">
         <p>
           Succes you just add it !!</p>
       </div>
-      <div :if={@error} class="notification is-danger">
+      <div :if={@error} class="notification is-danger" id="error-BD">
         <p>
           Error! Verify your inputs
         </p>
@@ -36,13 +31,13 @@ defmodule AgendaWeb.Components.MeetForm do
         <Field name={:mode}>
           <Label class="label" />
           {#if @strict_mode == false}
-            Schedule Strict Mode <Checkbox click="db_config" value="false" values={state: "false"} /> <br>
+            Schedule Strict Mode <Checkbox click="db_config" value="false" values={state: "false"} id="strict_mode" /> <br>
           {#else}
-            Schedule Strict Mode <Checkbox click="db_config" value="true" values={state: "true"} /> <br>
+            Schedule Strict Mode <Checkbox click="db_config" value="true" values={state: "true"} id="strict_mode" /> <br>
           {/if}
         </Field>
       </div>
-      <Form for={@changeset} change="validate" submit="save">
+      <Form for={@changeset} submit="save">
         <Field name={:title}>
           <Label class="label" />
           <div class="control">
@@ -101,26 +96,17 @@ defmodule AgendaWeb.Components.MeetForm do
           </div>
         </Field>
         <div class="save-form">
-          <button class="button is-link" type="submit">Save</button>
+          <button class="button is-link" type="submit" id="add_data">Save</button>
         </div>
         <div class="column">
-          <pre style="height: 170px; border-radius: 6px; padding: 2.25rem">
-      {@data}
-      </pre>
         </div>
       </Form>
     </div>
     """
   end
 
-  def handle_event("validate", %{"meeting" => params}, socket) do
-    {changeset, data} = Meeting.validate(params)
-    {:noreply, assign(socket, changeset: changeset, data: data)}
-  end
-
   def handle_event("db_config", _, socket) do
     strict_mode = change_state(socket.assigns.strict_mode)
-    strict_mode |> IO.puts()
     {:noreply, assign(socket, strict_mode: strict_mode)}
   end
 
